@@ -15,8 +15,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-            'device_name' => ['required', 'string']
+            'password' => ['required', 'string', 'min:8']
         ]);
 
         if ($validator->fails()) {
@@ -27,17 +26,16 @@ class AuthController extends Controller
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken($request->email)->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'user' => $user], 200);
     }
 
     public function token(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-            'device_name' => ['required', 'string']
+            'password' => ['required', 'string', 'min:8']
         ]);
 
         if ($validator->fails()) {
@@ -50,7 +48,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'The provided credentials are incorrect.'], 401);
         }
 
-        return response()->json(['token' => $user->createToken($request->device_name)->plainTextToken]);
+        return response()->json(['token' => $user->createToken($request->email)->plainTextToken, 'user' => $user]);
     }
 
 }
