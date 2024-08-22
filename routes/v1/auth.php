@@ -5,12 +5,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/token', [AuthController::class, 'token']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('logout',[AuthController::class,'logout']);
 
-Route::get('/name', function (Request $request) {
-    return response()->json(['name' => $request->user()->name]);
-})->middleware('auth:sanctum');
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/name', function (Request $request) {
+        return response()->json(['name' => $request->user()->name]);
+    });
+});

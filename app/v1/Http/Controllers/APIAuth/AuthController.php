@@ -31,7 +31,7 @@ class AuthController extends Controller
         return response()->json(['token' => $token, 'user' => $user], 200);
     }
 
-    public function token(Request $request)
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -49,6 +49,15 @@ class AuthController extends Controller
         }
 
         return response()->json(['token' => $user->createToken($request->email)->plainTextToken, 'user' => $user]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
+
+        return response('',204);
     }
 
 }
