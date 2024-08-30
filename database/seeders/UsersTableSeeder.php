@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     {
 
         $faker = Factory::create();
-        $password = bcrypt('secret');
+        $password = bcrypt('password');
 
         User::create([
             'name'     => $faker->name,
