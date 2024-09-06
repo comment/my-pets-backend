@@ -2,7 +2,9 @@
 
 namespace App\v1\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -24,16 +26,32 @@ class PublishCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws Exception
      */
-    public function handle()
+    public function handle(): void
     {
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
+        $connection = new AMQPStreamConnection(
+            Config::get('rabbitmq.host'),
+            Config::get('rabbitmq.port'),
+            Config::get('rabbitmq.username'),
+            Config::get('rabbitmq.password')
+        );
+
         $channel = $connection->channel();
+        $channel->exchange_declare('laravel', 'fanout', false, true, false);
+        $channel->queue_declare('laravel', false, true, false, false);
 
-        $channel->queue_declare('hello', false, true, false, false);
+        $channel->queue_bind('laravel', 'laravel');
 
-        $msg = new AMQPMessage('Hello World!');
-        $channel->basic_publish($msg, '', 'hello');
+        $data = [
+            'title' => 'Some title',
+            'content' => 'some content'
+        ];
+
+        $data = json_encode($data);
+
+        $msg = new AMQPMessage($data);
+        $channel->basic_publish($msg, 'laravel');
 
         echo " [x] Sent 'Hello World!'\n";
 

@@ -2,7 +2,9 @@
 
 namespace App\v1\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 class ConsumeCommand extends Command
@@ -23,10 +25,17 @@ class ConsumeCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws Exception
      */
-    public function handle()
+    public function handle(): void
     {
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
+        $connection = new AMQPStreamConnection(
+            Config::get('rabbitmq.host'),
+            Config::get('rabbitmq.port'),
+            Config::get('rabbitmq.username'),
+            Config::get('rabbitmq.password')
+        );
+
         $channel = $connection->channel();
 
         $channel->queue_declare('hello', false, true, false, false);
@@ -34,10 +43,11 @@ class ConsumeCommand extends Command
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
-            echo ' [x] Received ', $msg->body, "\n";
+            $data = json_decode($msg->body, true);
+            print_r($data);
         };
 
-        $channel->basic_consume('hello', '', false, true, false, false, $callback);
+        $channel->basic_consume('laravel', '', false, true, false, false, $callback);
 
         try {
             $channel->consume();
