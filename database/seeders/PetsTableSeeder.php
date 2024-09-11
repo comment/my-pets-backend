@@ -22,6 +22,9 @@ class PetsTableSeeder extends Seeder
             foreach (range(1, 5) as $i) {
                 Pet::create([
                     'user_id' => $user->id,
+                    'type_id' => 1,
+                    'sub_type_id' => $i,
+                    'age' => $i,
                     'nickname'   => $faker->word,
                     'about' => $faker->paragraphs(3, true),
                 ]);
