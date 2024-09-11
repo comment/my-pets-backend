@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'host' => env('RABBIT_HOST'),
-    'port' => env('RABBIT_PORT'),
-    'username' => env('RABBIT_USERNAME'),
+    'host' => env('RABBITMQ_HOST'),
+    'port' => env('RABBITMQ_PORT'),
+    'username' => env('RABBITMQ_USERNAME'),
     'password' => env('RABBITMQ_PASSWORD')
 ];

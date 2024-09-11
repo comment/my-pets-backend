@@ -113,6 +113,12 @@ services:
             - '~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq'
         networks:
             - sail
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '11211:11211'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
