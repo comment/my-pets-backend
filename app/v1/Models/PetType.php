@@ -2,6 +2,7 @@
 
 namespace App\v1\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,10 +12,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class PetType extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasUuids;
 
     protected $fillable = [
-        'title'
+        'title',
     ];
 
     public function pets(): HasMany

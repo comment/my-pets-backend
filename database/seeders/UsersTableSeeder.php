@@ -22,6 +22,7 @@ class UsersTableSeeder extends Seeder
             'name'     => $faker->name,
             'email'    => 'graphql@test.com',
             'password' => $password,
+            'date_of_birth' => $faker->date(),
         ]);
 
         for ($i = 0; $i < 10; ++$i) {
@@ -29,6 +30,7 @@ class UsersTableSeeder extends Seeder
                 'name'     => $faker->name,
                 'email'    => $faker->email,
                 'password' => $password,
+                'date_of_birth' => $faker->date(),
             ]);
         }
     }

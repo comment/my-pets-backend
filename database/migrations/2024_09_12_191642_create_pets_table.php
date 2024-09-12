@@ -12,18 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pets', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('type_id');
-            $table->unsignedBigInteger('sub_type_id');
-            $table->tinyInteger('age');
+            $table->uuid('id')->primary();
+            $table->string('identifier')->unique();
             $table->string('nickname');
+            $table->timestamp('date_of_birth');
             $table->text('about');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('type_id')->references('id')->on('pet_types');
-            $table->foreign('sub_type_id')->references('id')->on('pet_sub_types');
+            $table->foreignUuid('user_id')->references('id')->on('users');
+            $table->foreignUuid('type_id')->references('id')->on('pet_types');
+            $table->foreignUuid('sub_type_id')->references('id')->on('pet_sub_types');
         });
     }
 

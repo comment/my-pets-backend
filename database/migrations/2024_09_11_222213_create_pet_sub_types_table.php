@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pet_sub_types', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('type_id');
+            $table->uuid('id')->primary();
             $table->string('title');
             $table->timestamps();
 
-            $table->foreign('type_id')->references('id')->on('pet_types');
+            $table->foreignUuid('type_id')->references('id')->on('pet_types');
         });
     }
 

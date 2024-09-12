@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\v1\Models\Pet;
+use App\v1\Models\PetSubType;
+use App\v1\Models\PetType;
 use App\v1\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,10 +24,11 @@ class PetsTableSeeder extends Seeder
             foreach (range(1, 5) as $i) {
                 Pet::create([
                     'user_id' => $user->id,
-                    'type_id' => 1,
-                    'sub_type_id' => $i,
-                    'age' => $i,
-                    'nickname'   => $faker->word,
+                    'type_id' => PetType::all()->random()->id,
+                    'sub_type_id' => PetSubType::all()->random()->id,
+                    'identifier' => $faker->buildingNumber(),
+                    'nickname' => $faker->word,
+                    'date_of_birth' => $faker->date(),
                     'about' => $faker->paragraphs(3, true),
                 ]);
             }
