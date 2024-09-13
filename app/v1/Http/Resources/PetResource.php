@@ -15,6 +15,9 @@ class PetResource extends JsonResource
             'nickname' => $this->nickname,
             'date_of_birth' => $this->date_of_birth,
             'about' => $this->about,
+            'user_id' => $this->user_id,
+            'type_id' => $this->type_id,
+            'sub_type_id' => $this->sub_type_id,
         ];
     }
 }

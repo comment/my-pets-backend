@@ -20,6 +20,9 @@ class PetController
     public function store(StorePetRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = $request->user_id;
+        $data['type_id'] = $request->type_id;
+        $data['sub_type_id'] = $request->sub_type_id;
         $pet = Pet::create($data);
         return response(new PetResource($pet), 201);
     }
