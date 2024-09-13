@@ -17,7 +17,7 @@ class Pet extends Model
         'user_id',
         'type',
         'sub_type',
-        'identifire',
+        'identifier',
         'nickname',
         'date_of_birth',
         'about',

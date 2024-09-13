@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Role extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens, HasUuids;
+    use HasFactory, HasUuids;
 
     public function permissions(): BelongsToMany
     {
