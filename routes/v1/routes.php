@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('/pets',PetController::class);
     Route::apiResource('/roles',RoleController::class);
     Route::apiResource('/pet_types',PetTypeController::class);
+    Route::get('/get_sub_types/{type_id}', [PetTypeController::class, 'get_sub_types']);
     Route::apiResource('/pet_sub_types',PetSubTypeController::class);
 });
 
