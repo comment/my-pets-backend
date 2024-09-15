@@ -19,6 +19,9 @@ class StorePetRequest extends FormRequest
             'identifier' => 'required|string|max:255',
             'nickname' => 'required|string|max:255',
             'about' => 'string|max:255',
+            'user_id' => 'required',
+            'type_id' => 'required',
+            'sub_type_id' => 'required',
         ];
     }
 }

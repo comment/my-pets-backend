@@ -1,5 +1,6 @@
 <?php
 
+use App\v1\Http\Controllers\ImageUploadController;
 use App\v1\Http\Controllers\PetController;
 use App\v1\Http\Controllers\PetSubTypeController;
 use App\v1\Http\Controllers\PetTypeController;
@@ -17,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('/roles',RoleController::class);
     Route::apiResource('/pet_types',PetTypeController::class);
     Route::get('/get_sub_types/{type_id}', [PetTypeController::class, 'get_sub_types']);
+    Route::post('/upload-images', [ImageUploadController::class, 'upload']);
     Route::apiResource('/pet_sub_types',PetSubTypeController::class);
 });
 
