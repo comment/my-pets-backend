@@ -8,6 +8,7 @@ use App\v1\Http\Resources\RoleResource;
 use App\v1\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ImageUploadController
 {
@@ -38,20 +39,33 @@ class ImageUploadController
 
     public function upload(Request $request)
     {
-        // Валидация входящих данных
-        $request->validate([
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048', // Максимальный размер файла 2MB
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Максимальный размер 2MB для каждого файла
         ]);
 
-        $uploadedFiles = $request->file('image');
-        $filePaths = [];
-
-        foreach ($uploadedFiles as $file) {
-            $path = $file->store('uploads', 'public');
-            $filePaths[] = Storage::url($path);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        return response()->json(['filePaths' => $filePaths], 200);
+        $filePaths = [];
+
+        // Обработка загрузки каждого файла
+        $file = $request->file('image');
+        // Генерация уникального имени для файла
+        $fileName = time() . '_' . $file->getClientOriginalName();
+
+        // Сохранение файла в директорию
+        $path = $file->storeAs('uploads', $fileName, 'public');
+        $filePaths[] = 'http://127.0.0.1' . Storage::url($path); // Сохранение URL для возвращения
+
+
+        // Возврат успешного ответа с массивом путей
+        return response()->json([
+            'message' => 'Upload successful',
+            'paths' => $filePaths, // Возвращаем массив URL загруженных файлов
+        ], 200);
     }
 
 }
