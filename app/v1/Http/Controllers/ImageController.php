@@ -41,8 +41,7 @@ class ImageUploadController
     {
 
         $validator = Validator::make($request->all(), [
-            'image' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Максимальный размер 2MB для каждого файла
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Максимальный размер 2MB для каждого файла
         ]);
 
         if ($validator->fails()) {
