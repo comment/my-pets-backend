@@ -44,14 +44,14 @@ class ImageController
         $image->filename = $fileName;
         $image->mime_type = 'jpg';
         $image->size = '123213';
-        $image->path = Storage::url($path);
-        $image->user_id = '9d07cc03-7b5e-41fc-a5f6-a9fa8ab8af00';
-        $image->pet_id = '9d07cc08-40e1-40ab-8d35-fb0e895b4a44';
+        $image->path = 'http://127.0.0.1' . Storage::url($path);
+        $image->user_id = '9d089414-b624-40ce-a73f-ee0cc9c87759';
+        $image->pet_id = '9d089414-eb1d-406f-b632-d9f34ab446d1';
         $image->save();
 
 
         return response()->json([
-            'paths' => $image,
+            'image' => $image,
         ], 201);
     }
 
