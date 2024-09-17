@@ -6,6 +6,8 @@ use App\v1\Http\Requests\StoreRoleRequest;
 use App\v1\Http\Requests\UpdateRoleRequest;
 use App\v1\Http\Resources\RoleResource;
 use App\v1\Models\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController
 {
@@ -16,10 +18,24 @@ class RoleController
         );
     }
 
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $role = Role::create($data);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $role = Role::create($validatedData);
+
         return response(new RoleResource($role), 201);
     }
 
@@ -28,10 +44,23 @@ class RoleController
         return new RoleResource($role);
     }
 
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request, Role $role)
     {
-        $data = $request->validated();
-        $role->update($data);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $role->update($validatedData);
+
         return new RoleResource($role);
     }
 

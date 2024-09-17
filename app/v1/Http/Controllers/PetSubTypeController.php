@@ -14,6 +14,7 @@ use App\v1\Models\Pet;
 use App\v1\Models\PetSubType;
 use App\v1\Models\PetType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PetSubTypeController
 {
@@ -24,22 +25,49 @@ class PetSubTypeController
         );
     }
 
-    public function store(StorePetSubTypeRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $pet = PetSubType::create($data);
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $pet = PetSubType::create($validatedData);
+
         return response(new PetSubTypeResource($pet), 201);
     }
+
+
 
     public function show(PetSubType $pet_sub_type)
     {
         return new PetSubTypeResource($pet_sub_type);
     }
 
-    public function update(UpdatePetSubTypeRequest $request, PetSubType $pet_sub_type)
+    public function update(Request $request, PetSubType $pet_sub_type)
     {
-        $data = $request->validated();
-        $pet_sub_type->update($data);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $pet_sub_type->update($validatedData);
+
         return new PetSubTypeResource($pet_sub_type);
     }
 

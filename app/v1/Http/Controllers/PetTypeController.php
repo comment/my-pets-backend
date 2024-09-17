@@ -13,6 +13,7 @@ use App\v1\Models\Pet;
 use App\v1\Models\PetSubType;
 use App\v1\Models\PetType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PetTypeController
 {
@@ -23,10 +24,23 @@ class PetTypeController
         );
     }
 
-    public function store(StorePetTypeRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $pet = PetType::create($data);
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $pet = PetType::create($validatedData);
+
         return response(new PetTypeResource($pet), 201);
     }
 
@@ -35,10 +49,22 @@ class PetTypeController
         return new PetTypeResource($pet_type);
     }
 
-    public function update(UpdatePetTypeRequest $request, PetType $pet_type)
+    public function update(Request $request, PetType $pet_type)
     {
-        $data = $request->validated();
-        $pet_type->update($data);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $request->validated();
+
+        $pet_type->update($validatedData);
+
         return new PetTypeResource($pet_type);
     }
 

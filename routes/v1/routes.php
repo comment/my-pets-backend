@@ -27,7 +27,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('/images', ImageController::class);
 });
 
-
 Route::get('/unauthenticated', function () {
     return response()->json(
         [

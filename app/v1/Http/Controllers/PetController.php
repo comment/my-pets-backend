@@ -7,6 +7,7 @@ use App\v1\Http\Requests\UpdatePetRequest;
 use App\v1\Http\Resources\PetResource;
 use App\v1\Models\Pet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PetController
 {
@@ -17,13 +18,28 @@ class PetController
         );
     }
 
-    public function store(StorePetRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = $request->user_id;
-        $data['type_id'] = $request->type_id;
-        $data['sub_type_id'] = $request->sub_type_id;
-        $pet = Pet::create($data);
+
+        $validator = Validator::make($request->all(), [
+            'identifier' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255',
+            'about' => 'string|max:255',
+            'user_id' => 'required',
+            'type_id' => 'required',
+            'sub_type_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $validator->validated();
+
+        $pet = Pet::create($validatedData);
+
         return response(new PetResource($pet), 201);
     }
 
@@ -32,10 +48,27 @@ class PetController
         return new PetResource($pet);
     }
 
-    public function update(UpdatePetRequest $request, Pet $pet)
+    public function update(Request $request, Pet $pet)
     {
-        $data = $request->validated();
-        $pet->update($data);
+        $validator = Validator::make($request->all(), [
+            'identifier' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255',
+            'about' => 'string|max:255',
+            'user_id' => 'required',
+            'type_id' => 'required',
+            'sub_type_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validatedData = $validator->validated();
+
+        $pet->update($validatedData);
+
         return new PetResource($pet);
     }
 
