@@ -78,7 +78,7 @@ class PetTypeController
     public function get_sub_types($pet_type)
     {
         return PetTypeResource::collection(
-            PetSubType::where('type_id', $pet_type)->get()
+            PetSubType::where('pet_type_id', $pet_type)->get()
         );
     }
 }

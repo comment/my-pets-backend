@@ -23,7 +23,6 @@ class ImageController
 
     public function store(Request $request): JsonResponse
     {
-
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -40,10 +39,19 @@ class ImageController
         $fileName = time() . '_' . $file->getClientOriginalName(); //todo добавить уникальный файлнейм без исходного
         $path = $file->storeAs('uploads', $fileName, 'public');
 
-        $filePaths[] = 'http://127.0.0.1' . Storage::url($path); //todo добавить переменную для УРЛ
+        $image = new Image();
+        $image->image_type = 2;//pets
+        $image->filename = $fileName;
+        $image->mime_type = 'jpg';
+        $image->size = '123213';
+        $image->path = Storage::url($path);
+        $image->user_id = '9d07cc03-7b5e-41fc-a5f6-a9fa8ab8af00';
+        $image->pet_id = '9d07cc08-40e1-40ab-8d35-fb0e895b4a44';
+        $image->save();
+
 
         return response()->json([
-            'paths' => $filePaths,
+            'paths' => $image,
         ], 201);
     }
 
@@ -73,7 +81,7 @@ class ImageController
 
     public function destroy(Image $image)
     {
-        $pet->delete();
+        $image->delete();
 
         return response('', 204);
     }
