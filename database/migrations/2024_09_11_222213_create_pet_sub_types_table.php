@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->timestamps();
 
-            $table->foreignUuid('type_id')->references('id')->on('pet_types');
+            $table->foreignUuid('pet_type_id')->references('id')->on('pet_types');
         });
     }
 

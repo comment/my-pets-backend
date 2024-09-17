@@ -54,7 +54,7 @@ class UserController
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,'.$request->id,
             'password' => [
                 'required',
                 Password::min(8)

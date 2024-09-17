@@ -12,7 +12,7 @@ class PetSubTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'type_id' => $this->type_id,
+            'pet_type_id' => $this->pet_type_id,
         ];
     }
 }

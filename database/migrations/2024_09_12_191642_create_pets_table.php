@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignUuid('user_id')->references('id')->on('users');
-            $table->foreignUuid('type_id')->references('id')->on('pet_types');
-            $table->foreignUuid('sub_type_id')->references('id')->on('pet_sub_types');
+            $table->foreignUuid('pet_type_id')->references('id')->on('pet_types');
+            $table->foreignUuid('pet_sub_type_id')->references('id')->on('pet_sub_types');
         });
     }
 

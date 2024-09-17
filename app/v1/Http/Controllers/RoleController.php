@@ -57,7 +57,7 @@ class RoleController
             ], 422);
         }
 
-        $validatedData = $request->validated();
+        $validatedData = $validator->validated();
 
         $role->update($validatedData);
 

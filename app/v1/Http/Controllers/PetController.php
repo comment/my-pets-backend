@@ -26,8 +26,8 @@ class PetController
             'nickname' => 'required|string|max:255',
             'about' => 'string|max:255',
             'user_id' => 'required',
-            'type_id' => 'required',
-            'sub_type_id' => 'required',
+            'pet_type_id' => 'required',
+            'pet_sub_type_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -51,12 +51,12 @@ class PetController
     public function update(Request $request, Pet $pet)
     {
         $validator = Validator::make($request->all(), [
-            'identifier' => 'required|string|max:255',
+            'identifier' => 'required|string|max:255|unique:pets,identifier,'.$request->id,
             'nickname' => 'required|string|max:255',
             'about' => 'string|max:255',
             'user_id' => 'required',
-            'type_id' => 'required',
-            'sub_type_id' => 'required',
+            'pet_type_id' => 'required',
+            'per_sub_type_id' => 'required',
         ]);
 
         if ($validator->fails()) {

@@ -15,7 +15,7 @@ class PetSubType extends Model
     use HasFactory, Notifiable, HasApiTokens, HasUuids;
 
     protected $fillable = [
-        'type_id',
+        'pet_type_id',
         'title',
     ];
 

@@ -15,8 +15,8 @@ class Pet extends Model
 
     protected $fillable = [
         'user_id',
-        'type_id',
-        'sub_type_id',
+        'pet_type_id',
+        'pet_sub_type_id',
         'identifier',
         'nickname',
         'date_of_birth',

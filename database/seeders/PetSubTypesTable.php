@@ -20,7 +20,7 @@ class PetSubTypesTable extends Seeder
 
         foreach (range(1, 50) as $i) {
             PetSubType::create([
-                'type_id' => PetType::all()->random()->id,
+                'pet_type_id' => PetType::all()->random()->id,
                 'title' => $faker->word,
             ]);
         }
