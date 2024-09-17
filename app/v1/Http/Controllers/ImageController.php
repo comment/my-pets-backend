@@ -2,24 +2,42 @@
 
 namespace App\v1\Http\Controllers;
 
+use App\v1\Http\Requests\StoreImageRequest;
 use App\v1\Http\Requests\StoreRoleRequest;
 use App\v1\Http\Requests\UpdateRoleRequest;
 use App\v1\Http\Resources\RoleResource;
 use App\v1\Models\Role;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class ImageUploadController
+class ImageController
 {
     public function index()
     {
 
     }
 
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request): JsonResponse
     {
+        $filePaths = [];
 
+        // Обработка загрузки каждого файла
+        $file = $request->file('image');
+        // Генерация уникального имени для файла
+        $fileName = time() . '_' . $file->getClientOriginalName(); //todo добавить уникальный файлнейм без исходного
+
+        // Сохранение файла в директорию
+        $path = $file->storeAs('uploads', $fileName, 'public');
+        $filePaths[] = 'http://127.0.0.1' . Storage::url($path); //todo добавить переменную для УРЛ
+
+
+        // Возврат успешного ответа с массивом путей
+        return response()->json([
+            'message' => 'Upload successful',
+            'paths' => $filePaths,
+        ], 200);
     }
 
     public function show(Role $role)
@@ -35,36 +53,6 @@ class ImageUploadController
     public function destroy(Role $role)
     {
 
-    }
-
-    public function upload(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Максимальный размер 2MB для каждого файла
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $filePaths = [];
-
-        // Обработка загрузки каждого файла
-        $file = $request->file('image');
-        // Генерация уникального имени для файла
-        $fileName = time() . '_' . $file->getClientOriginalName();
-
-        // Сохранение файла в директорию
-        $path = $file->storeAs('uploads', $fileName, 'public');
-        $filePaths[] = 'http://127.0.0.1' . Storage::url($path); // Сохранение URL для возвращения
-
-
-        // Возврат успешного ответа с массивом путей
-        return response()->json([
-            'message' => 'Upload successful',
-            'paths' => $filePaths, // Возвращаем массив URL загруженных файлов
-        ], 200);
     }
 
 }

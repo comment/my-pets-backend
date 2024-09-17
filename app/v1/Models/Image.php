@@ -9,17 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Role extends Model
+class Image extends Model
 {
     use HasFactory, Notifiable, HasApiTokens, HasUuids;
 
     protected $fillable = [
-        'name',
-        'slug',
+        'image_type',
+        'filename',
+        'mime_type',
+        'size',
+        'path',
+        'user_id',
+        'pet_id',
     ];
 
-    public function permissions(): BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class,'roles_permissions');
-    }
 }
