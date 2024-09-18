@@ -45,8 +45,8 @@ class ImageController
         $image->mime_type = 'jpg';
         $image->size = '123213';
         $image->path = 'http://127.0.0.1' . Storage::url($path);
-        $image->user_id = '9d089414-b624-40ce-a73f-ee0cc9c87759';
-        $image->pet_id = '9d089414-eb1d-406f-b632-d9f34ab446d1';
+        $image->user_id = '9d098f34-fb62-4cd4-96f3-504fb223efdf';
+        $image->pet_id = '9d098f3a-06c4-41aa-976a-514f9584c67c';
         $image->save();
 
 
